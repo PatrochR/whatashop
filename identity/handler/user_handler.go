@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"errors"
 	"net/http"
 
 	"github.com/PatrochR/whatashop/model/dto"
@@ -27,7 +26,7 @@ func (h *UserHandler) GetAll(w http.ResponseWriter, r *http.Request) {
 	users, err := h.userRepo.GetAll()
 	if err != nil {
 		result.IsSuccess = false
-		result.Error = errors.New("Something wrong!")
+		result.Error = &helper.ErrSomthingWrong 
 		result.Value = nil
 		helper.WriteJSON(w, http.StatusInternalServerError, result)
 		return

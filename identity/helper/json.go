@@ -12,7 +12,7 @@ func WriteJSON(w http.ResponseWriter, code int, v any) error {
 }
 
 type Result struct {
-	Value     any   `json:"value,omitempty"`
-	IsSuccess bool  `json:"is_success"`
-	Error     error `json:"error,omitempty"`
+	Value     any    `json:"value,omitempty"`
+	IsSuccess bool   `json:"is_success"`
+	Error     *string `json:"error,omitempty"`
 }

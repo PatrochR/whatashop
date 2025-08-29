@@ -1,6 +1,7 @@
 package router
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/PatrochR/whatashop/handler"
@@ -24,7 +25,7 @@ func NewRouter(Address string, userHandler *handler.UserHandler) *Router {
 func(r *Router) Run() error {
 	router := chi.NewRouter()
 	router.Use(middleware.Logger)
-	router.Get("/admin/user/" , r.userHandler.GetAll)
-	log.Info("server start on port " , r.Address)
+	router.Get("/" , r.userHandler.GetAll)
+	log.Info(fmt.Sprintln("server start on port " , r.Address))
 	return http.ListenAndServe(r.Address, router)
 }
