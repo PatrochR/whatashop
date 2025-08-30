@@ -26,6 +26,7 @@ func(r *Router) Run() error {
 	router := chi.NewRouter()
 	router.Use(middleware.Logger)
 	router.Get("/" , r.userHandler.GetAll)
+	router.Post("/" , r.userHandler.Add)
 	log.Info(fmt.Sprintln("server start on port " , r.Address))
 	return http.ListenAndServe(r.Address, router)
 }
