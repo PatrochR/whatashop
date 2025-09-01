@@ -53,7 +53,7 @@ func (h *UserHandler) Add(w http.ResponseWriter, r *http.Request) {
 	var dto dto.UserAdd
 	if err := json.NewDecoder(r.Body).Decode(&dto); err != nil {
 		result.IsSuccess = false
-		result.Error = &helper.ErrSomthingWrong
+		result.Error = helper.Prt(err.Error())
 		helper.WriteJSON(w, http.StatusInternalServerError, result)
 		result.Log(h.logger)
 		return
@@ -64,7 +64,7 @@ func (h *UserHandler) Add(w http.ResponseWriter, r *http.Request) {
 	hashed , err:= bcrypt.GenerateFromPassword([]byte(dto.Password) , 10)
 	if err != nil{
 		result.IsSuccess = false
-		result.Error = &helper.ErrSomthingWrong
+		result.Error = helper.Prt(err.Error())
 		helper.WriteJSON(w, http.StatusInternalServerError, result)
 		result.Log(h.logger)
 		return 
@@ -76,12 +76,15 @@ func (h *UserHandler) Add(w http.ResponseWriter, r *http.Request) {
 	err = h.userRepo.Add(&user)
 	if err != nil {
 		result.IsSuccess = false
-		result.Error = &helper.ErrSomthingWrong
+		result.Error = helper.Prt(err.Error())
 		helper.WriteJSON(w, http.StatusInternalServerError, result)
 		result.Log(h.logger)
 		return
 	}
 
 	result.Value = "User Added"
+	result.Log(h.logger)
 	helper.WriteJSON(w, http.StatusOK, result)
 }
+
+

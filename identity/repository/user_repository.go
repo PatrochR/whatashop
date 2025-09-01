@@ -28,15 +28,14 @@ type UserRepository interface{
 }
 
 func (p *UserPostgres) Init() error {
-	query := `create table if not exist users (
-		id UUID PRIMARY KEY,
+	query := `create table if not exists users (
+		id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
 		username text not null unique,
 		email text not null unique,
 		password text not null,
 		created_at timestamp not null,
 		update_at timestamp not null,
-		delete_at timestamp ,
-
+		delete_at timestamp
 	)`
 	_, err := p.db.Exec(query)
 	return err

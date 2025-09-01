@@ -22,11 +22,13 @@ func NewRouter(Address string, userHandler *handler.UserHandler) *Router {
 	}
 }
 
-func(r *Router) Run() error {
+func (r *Router) Run() error {
 	router := chi.NewRouter()
 	router.Use(middleware.Logger)
-	router.Get("/" , r.userHandler.GetAll)
-	router.Post("/" , r.userHandler.Add)
-	log.Info(fmt.Sprintln("server start on port " , r.Address))
+	router.Route("/user", func(subRouter chi.Router) {
+		subRouter.Get("/", r.userHandler.GetAll)
+		subRouter.Post("/", r.userHandler.Add)
+	})
+	log.Info(fmt.Sprintln("server start on port ", r.Address))
 	return http.ListenAndServe(r.Address, router)
 }

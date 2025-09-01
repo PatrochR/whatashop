@@ -14,18 +14,25 @@ func WriteJSON(w http.ResponseWriter, code int, v any) error {
 }
 
 type Result struct {
-	Value     any    `json:"value,omitempty"`
-	IsSuccess bool   `json:"is_success"`
+	Value     any     `json:"value,omitempty"`
+	IsSuccess bool    `json:"is_success"`
 	Error     *string `json:"error,omitempty"`
 }
 
-//TODO:  add func to return a good log by result
-func(r *Result) Log(logger *log.Logger){
+func (r *Result) Log(logger *log.Logger) {
 	var value any
-	if r.Value != nil{
+	if r.Value != nil {
 		value = r.Value
-	}else{
+	} else {
 		value = nil
 	}
-	logger.Error("Return Result:", "Value" , value , "IsSuccess" , r.IsSuccess  ,"Error" , *r.Error)
-} 
+	if r.Error != nil {
+		logger.Error("Return Result:", "Value", value, "IsSuccess", r.IsSuccess, "Error", *r.Error)
+	} else {
+		logger.Info("Return Result:", "Value", value, "IsSuccess", r.IsSuccess)
+	}
+}
+
+func Prt[T any](v T) *T {
+	return &v
+}

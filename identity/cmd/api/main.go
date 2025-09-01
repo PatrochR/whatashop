@@ -30,6 +30,9 @@ func main() {
 	}
 	log.Info("database connected")
 	userRepo := repository.NewUserPostgres(db)
+	if err:=userRepo.Init(); err!= nil{
+		logger.Fatal(err)
+	}
 	userHandler := handler.NewUserHandler(logger, userRepo)
 	router := router.NewRouter(":3000", userHandler)
 	if err := router.Run(); err != nil {
